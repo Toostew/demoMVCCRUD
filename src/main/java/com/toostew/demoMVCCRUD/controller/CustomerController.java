@@ -75,7 +75,7 @@ public class CustomerController {
 
     //updating
 
-    
+
     @GetMapping("/updateCustomer-form")
     public String updateCustomerForm(@RequestParam(name = "customerId") int id, Model model) {
         Customer temp = customerService.getCustomer(id);
@@ -93,6 +93,14 @@ public class CustomerController {
         temp.setEmail(customer.getEmail());
         System.out.println("altered Customer");
         customerService.updateCustomer(temp);
+        return "redirect:/customers/list";
+    }
+
+    //deleting
+    @GetMapping("/deleteCustomer")
+    public String deleteCustomer(@RequestParam(name = "customerId") int id) {
+        System.out.println("deleting Customer: " + customerService.getCustomer(id));
+        customerService.deleteCustomer(id);
         return "redirect:/customers/list";
     }
 
