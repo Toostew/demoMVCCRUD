@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     public CustomerDAOImpl(EntityManager em) {
         this.em = em;
     }
-
+    @Transactional
     @Override
     public void createCustomer(Customer customer) {
         System.out.println("Created new Customer: " + customer.getFirstName() + " " + customer.getLastName());
@@ -41,7 +42,8 @@ public class CustomerDAOImpl implements CustomerDAO {
         TypedQuery<Customer> typedQuery = em.createQuery("FROM Customer ORDER BY lastName", Customer.class);
         return typedQuery.getResultList();
     }
-
+    @Transactional
+    @Override
     public void updateCustomer(Customer customer) {
         Customer temp = em.find(Customer.class, customer.getId());
         System.out.println("updated " + temp.getFirstName() + " " + temp.getLastName());
@@ -50,7 +52,8 @@ public class CustomerDAOImpl implements CustomerDAO {
         temp.setEmail(customer.getEmail());
         em.merge(temp);
     }
-
+    @Transactional
+    @Override
     public void deleteCustomer(int Id) {
         Customer temp = em.find(Customer.class, Id);
         System.out.println("Deleting Customer " + temp.getFirstName() + " " + temp.getLastName());
